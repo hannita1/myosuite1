@@ -34,6 +34,8 @@ class PoseEnvV0(BaseV0):
         # creating the sim / sim_obsd instances. Next we run through "setup"  which relies on sim / sim_obsd
         # created in __init__ to complete the setup.
         super().__init__(model_path=model_path, obsd_model_path=obsd_model_path, seed=seed, env_credits=self.MYO_CREDIT)
+        print("Initializing PoseEnvV0")
+        print(model_path)
 
         self._setup(**kwargs)
 
