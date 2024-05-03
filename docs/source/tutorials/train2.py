@@ -4,25 +4,28 @@ import myosuite
 from myosuite.utils import gym
 from stable_baselines3 import PPO
 
-models_dir = "models/PPO"
+models_dir = "models/PPO/HandPoseFixed"
 logs_dir = "logs"
+
 
 if not os.path.exists(models_dir):
     os.makedirs(models_dir)
 
 env = gym.make('myoHandPoseFixed-v0')
+#env = gym.make('MyoHandPhoneFixed-v0')
+
 env.reset()
 
 # mean episode reward is not changing, why? always -1
 model = PPO('MlpPolicy', env, verbose=1, tensorboard_log=logs_dir)
 
 TIMESTEPS = 10000
-#for i in range(1,30):
+#for i in range(1,10):
 #    model.learn(total_timesteps=TIMESTEPS)#, reset_num_timesteps=False, tb_log_name='PPO')
     #save model every 10000 steps
 #    model.save(f"{models_dir}/{TIMESTEPS*i}")
 
-model_path = f"{models_dir}/170000.zip"
+model_path = f"{models_dir}/90000"
 
 pi = PPO.load(model_path, env=env)
 
