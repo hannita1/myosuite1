@@ -117,3 +117,6 @@ tags
 
 # Media #
 .mp4
+
+# logs # 
+docs/source/tutorials/logs/*
