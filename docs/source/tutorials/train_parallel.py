@@ -110,8 +110,12 @@ def render_and_evaluate(model_path, env_id):
 
 if __name__ == "__main__":
     #render_and_evaluate()
-    model, models_dir, TIMESTEPS, n_iterations, env_id, mean_rewards, std_rewards = train_and_evaluate()
+    #model, models_dir, TIMESTEPS, n_iterations, env_id, mean_rewards, std_rewards = train_and_evaluate()
     #plot_mean_rewards(mean_rewards, std_rewards)
-    model_path = f"{models_dir}/{TIMESTEPS * n_iterations}"
+    #model_path = f"{models_dir}/{TIMESTEPS * n_iterations}"
+    models_dir = "models/PPO/HandPoseFixed"
+    env_id = 'myoHandPoseFixed-v0'
+
+    model_path = f"{models_dir}/90000"
     render_and_evaluate(model_path, env_id)
 
