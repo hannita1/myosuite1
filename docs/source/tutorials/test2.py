@@ -8,7 +8,7 @@ import numpy as np
 #policy = pth+"myoElbowPose1D6MExoRandom-v0/2022-02-26_21-16-27/36_env=myoElbowPose1D6MExoRandom-v0,seed=1/iterations/best_policy.pickle"
 #pi = pickle.load(open(policy, 'rb'))
 
-
+print("test")
 
 env = gym.make('myoElbowPose1D6MExoRandom-v0')
 
