@@ -60,14 +60,22 @@ def train_and_evaluate():
     return model, models_dir,TIMESTEPS, n_iterations, env_id, mean_rewards, std_rewards
 
 def plot_mean_rewards(mean_rewards, std_rewards):
+    print(f"figure")
     plt.figure(figsize=(10, 5))
-    plt.errorbar(range(1, len(mean_rewards) + 1), mean_rewards, yerr=std_rewards, fmt='-o', capsize=5)
+    print("error bar")
+    #plt.errorbar(range(1, len(mean_rewards) + 1), mean_rewards, yerr=std_rewards, fmt='-o', capsize=5)
+    plt.plot(range(1, len(mean_rewards) + 1), mean_rewards, '-o')
+    print("iteration")
     plt.xlabel('Iteration')
+    print("mean reward label")
     plt.ylabel('Mean Reward')
+    print("title label")
     plt.title('Policy Improvement Over Time')
+    print("grid")
     plt.grid(True)
+    print("save")
     plt.savefig("policy_improvement.png")  # Speichert den Plot in einer Datei anstatt ihn anzuzeigen
-    plt.close()
+    #plt.close()
 
 
 
@@ -88,7 +96,6 @@ def render_and_evaluate(model_path, env_id):
     render_env = gym.make(env_id)
 
     # Load the last trained model
-    #model_path = f"{models_dir}/90000"
     pi = PPO.load(model_path, env=render_env)
 
     for ep in range(1,3000):
@@ -110,12 +117,16 @@ def render_and_evaluate(model_path, env_id):
 
 if __name__ == "__main__":
     #render_and_evaluate()
-    #model, models_dir, TIMESTEPS, n_iterations, env_id, mean_rewards, std_rewards = train_and_evaluate()
-    #plot_mean_rewards(mean_rewards, std_rewards)
-    #model_path = f"{models_dir}/{TIMESTEPS * n_iterations}"
-    models_dir = "models/PPO/HandPoseFixed"
-    env_id = 'myoHandPoseFixed-v0'
+    model, models_dir, TIMESTEPS, n_iterations, env_id, mean_rewards, std_rewards = train_and_evaluate()
+    print(f"mean reward: {mean_rewards} ")
+    plot_mean_rewards(mean_rewards, std_rewards)
+    model_path = f"{models_dir}/{TIMESTEPS * n_iterations}"
 
-    model_path = f"{models_dir}/90000"
+    #Test trained policy
+    #models_dir = "models/PPO/HandPoseFixed"
+    #env_id = 'myoHandPoseFixed-v0'
+    #model_path = f"{models_dir}/90000"
+
+
     render_and_evaluate(model_path, env_id)
 
