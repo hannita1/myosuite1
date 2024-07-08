@@ -1,9 +1,11 @@
+import sys
+import os
 from myosuite.utils import gym; register=gym.register
-from env_base import MujocoEnv
-from myo.base_v0 import BaseV0
+from myosuite.envs.myo.base_v0 import BaseV0
 import numpy as np
 import collections
-# base environment
+
+
 
 
 class MyHandEnv(BaseV0):
