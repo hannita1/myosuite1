@@ -12,7 +12,12 @@ register(
     entry_point='my_hand_env:MyHandEnv',
     max_episode_steps=100,
     kwargs={
-        'model_path': curr_dir + '/../simhive/myo_sim/hand/myohand.xml',
+        #'model_path': curr_dir + '/../simhive/myo_sim/hand/myohand.xml',
+        #'model_path': curr_dir + '/myo/assets/hand/myohand_hold.xml',
+        #'model_path': curr_dir + '/myo/assets/hand/myohand_phone.xml',
+        'model_path': curr_dir + '/myo/assets/hand/myohand_tabletop_phone.xml',
+        #'model_path': curr_dir + '/myo/assets/hand/myohand_tabletop2.xml',
+
     }
 )
 
