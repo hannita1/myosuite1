@@ -79,7 +79,7 @@ class MyHandEnv(BaseV0):
 
         # Ensure pose_err is an array
         obs_dict['pose_err'] = np.array([min_dist_to_touch])
-        print(f"get_obs_dict: {obs_dict}")
+        #print(f"get_obs_dict: {obs_dict}")
         return obs_dict
 
     def get_reward_dict(self, obs_dict):
@@ -123,8 +123,11 @@ class MyHandEnv(BaseV0):
 
 
 
-    def reset(self):
-        self.sim.reset()
+    """
+    def reset(self, seed=None, options=None):
+        #self.sim.reset()
+        if seed is not None:
+            self.seed(seed)
 
 
         # setting the initial state
@@ -142,3 +145,4 @@ class MyHandEnv(BaseV0):
 
         print(f"Reset: qpos={self.init_qpos}, qvel={self.init_qvel}, obs={obs}")
         return obs
+    """
