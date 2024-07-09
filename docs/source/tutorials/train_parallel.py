@@ -26,19 +26,19 @@ from myosuite.envs.my_hand_env import MyHandEnv
 #model_path = os.path.join(project_root, 'myosuite/envs/myo/assets/hand/myohand_tabletop_phone.xml')
 
 def train_and_evaluate():
-    #models_dir = "models/PPO/ObjHoldFixed"
-    #logs_dir = "logs/ObjHoldFixed"
-    #results_file = "training_results_ObjHoldFixed.csv"
-    models_dir = "models/PPO/MyHandEnv"
-    logs_dir = "logs/MyHandEnv"
-    results_file = "training_results_MyHandEnv.csv"
+    models_dir = "models/PPO/ObjHoldFixed"
+    logs_dir = "logs/ObjHoldFixed"
+    results_file = "training_results_ObjHoldFixed.csv"
+    #models_dir = "models/PPO/MyHandEnv"
+    #logs_dir = "logs/MyHandEnv"
+    #results_file = "training_results_MyHandEnv.csv"
 
     if not os.path.exists(models_dir):
         os.makedirs(models_dir)
 
     #env_id = 'myoHandPoseFixed-v0'
-    #env_id = 'myoHandObjHoldFixed-v0'
-    env_id = 'MyHandEnv-v0'
+    env_id = 'myoHandObjHoldFixed-v0'
+    #env_id = 'MyHandEnv-v0'
 
     # Number of parallel environments
     n_procs = 10
@@ -192,15 +192,18 @@ if __name__ == "__main__":
 
 
     ## Test trained policy
-    models_dir = "models/PPO/MyHandEnv"
-    env_id = 'MyHandEnv-v0'
+    #models_dir = "models/PPO/MyHandEnv"
+    #env_id = 'MyHandEnv-v0'
 
     #models_dir = "models/PPO/HandPoseFixed"
     #env_id = 'myoHandPoseFixed-v0'
 
+    models_dir = "models/PPO/ObjHoldFixed"
+    env_id = 'myoHandObjHoldFixed-v0'
+
     ## load policy and render
-    #model_path = f"{models_dir}/9000000"
-    #render_and_evaluate(model_path, env_id)
+    model_path = f"{models_dir}/9000000"
+    render_and_evaluate(model_path, env_id)
 
 
     #plot_mean_rewards_from_csv("training_results.csv")
