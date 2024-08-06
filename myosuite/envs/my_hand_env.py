@@ -24,24 +24,20 @@ class MyHandEnv(BaseV0):
             frame_skip=5,
         )
 
-#    def get_obs_dict(self, sim):
-#        obs_dict = {}
-#        obs_dict['time'] = np.array([self.sim.data.time])
-#        obs_dict['joint_pos'] = sim.data.qpos.ravel().copy()
-#        obs_dict['joint_vel'] = sim.data.qvel.ravel().copy()
-#        obs_dict['act'] = sim.data.act.ravel().copy()
-#        print(f"get_obs_dict: {obs_dict}")
-#        return obs_dict
+#
 
     # calls BaseV0 setup method, initializes the environment with the given obs_keys, reward_keys and frame_skipping
     def _setup(self, obs_keys, weighted_reward_keys, frame_skip):
         super()._setup(obs_keys=obs_keys, weighted_reward_keys=weighted_reward_keys, frame_skip=frame_skip)
         # will store a list of site ids -> will store the ID for the site 'IFtip' & the targets
+        #self.smartphone_sid = self.sim.model.site_name2id("smartphone")
         self.tip_sids = [self.sim.model.site_name2id('IFtip')]
-        self.target_sids = [self.sim.model.site_name2id(f'target_touch_area_{i + 1}') for i in range(3)]
+        self.target_sids = [self.sim.model.site_name2id(f'touch_area_{i + 1}') for i in range(3)]
         # usage:
         #   fingertip_pos = self.sim.data.site_xpos[self.tip_sids[0]]
         #   target_pos_1 = self.sim.data.site_xpos[self.target_sids[0]]
+
+        self.target_positions = [self.sim.data.site_xpos[sid].copy() for sid in self.target_sids]
 
     def get_obs_dict(self, sim):
 
@@ -58,12 +54,18 @@ class MyHandEnv(BaseV0):
         # -> copies the position of the IFtip into the obs_dict
         obs_dict['IFtip_pos'] = sim.data.site_xpos[sim.model.site_name2id('IFtip')].copy()
 
+        #obs_dict['smartphone_pos'] = sim.data.site_xpos[self.smartphone_sid]
 
-        # positions of the tocuh targets
+        # positions of the touch targets
+        #target_positions = [sim.data.site_xpos[sid].copy() for sid in self.target_sids]
+        #self.target_positions = target_positions
+
+
+        # positions of the touch targets
         target_positions = [
-            self.sim.data.site_xpos[self.sim.model.site_name2id('target_touch_area_1')],
-            self.sim.data.site_xpos[self.sim.model.site_name2id('target_touch_area_2')],
-            self.sim.data.site_xpos[self.sim.model.site_name2id('target_touch_area_3')],
+            self.sim.data.site_xpos[self.sim.model.site_name2id('touch_area_1')],
+            self.sim.data.site_xpos[self.sim.model.site_name2id('touch_area_2')],
+            self.sim.data.site_xpos[self.sim.model.site_name2id('touch_area_3')],
         ]
 
 
@@ -106,8 +108,6 @@ class MyHandEnv(BaseV0):
             # negative value of the norm of the joint activity,
             # the norm of the act vector is the sum of the activity of the joints
             ('act_reg', -1.0 * act_mag),
-            # binary reward -> 1 if fingertip inside the threshold
-            ('sparse', 1.0 if pose_dist < tap_threshold else 0.0),
             # true if task is solved -> the distance is lower than the threshold
             ('solved', pose_dist < tap_threshold),
             # episode is done when we are too far from target
@@ -121,6 +121,15 @@ class MyHandEnv(BaseV0):
 
 
 
+
+    def reset(self):
+        self.sim.reset()
+        qpos = self.init_qpos.copy()
+        qvel = self.init_qvel.copy()
+        self.sim.data.qpos[:] = qpos
+        self.sim.data.qvel[:] = qvel
+        self.sim.forward()
+        return self.get_obs()
 
 
     """
