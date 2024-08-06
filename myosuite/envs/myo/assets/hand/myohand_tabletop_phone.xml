@@ -15,26 +15,28 @@
         <body name="smartphone" pos="0.00 0.0 .1">
             <!--defines new geometry ("physicalische Form") for the object "smartphone",
             size(width, height, depth), position relative to body-->
-            <geom name="smartphone_geom" type="box" size="0.05 0.1 0.003" pos="0 0 0.003" rgba="0.8 0.8 0.8 1"/>
+            <geom name="smartphone_geom" type="box" size="0.05 0.1 0.003" pos="0 0 0.003" rgba="0.8 0.8 0.8 1" friction="1.0 0.005 0.0001"/>
 
             <site name="touch_area_1" pos="0.02 0.03 0.006" size="0.01 0.02 0.001" rgba="1 0 0 0.5" type="box"/>
             <site name="touch_area_2" pos="0.02 -0.03 0.006" size="0.01 0.02 0.001" rgba="0 1 0 0.5" type="box"/>
             <site name="touch_area_3" pos="-0.02 0 0.006" size="0.01 0.02 0.001" rgba="0 0 1 0.5" type="box"/>
-            <joint name="OBJTx" pos="0 0 0" axis="1 0 0" type="slide"/>
-            <joint name="OBJTy" pos="0 0 0" axis="0 1 0" type="slide"/>
-            <joint name="OBJTz" pos="0 0 0" axis="0 0 1" type="slide"/>
-            <joint name="OBJRx" pos="0 0 0" axis="1 0 0"/>
-            <joint name="OBJRy" pos="0 0 0" axis="0 1 0"/>
-            <joint name="OBJRz" pos="0 0 0" axis="0 0 1"/>
+            <!-- Translation -> relocation of the smartphone -->
+            <joint name="OBJTx" pos="0 0 0" axis="1 0 0" type="slide" range="0 0"/>
+            <joint name="OBJTy" pos="0 0 0" axis="0 1 0" type="slide" range="0 0"/>
+            <joint name="OBJTz" pos="0 0 0" axis="0 0 1" type="slide" range="0 0"/>
+            <!-- Rotation of the phone -->
+            <joint name="OBJRx" pos="0 0 0" axis="1 0 0" range="0 0"/>
+            <joint name="OBJRy" pos="0 0 0" axis="0 1 0" range="0 0"/>
+            <joint name="OBJRz" pos="0 0 0" axis="0 0 1" range="0 0"/>
 
 
 
         </body>
 
         <!--define targets for touch areas, site = specific point of interest-->
-        <site name="target_touch_area_1" pos="0.02 0.03 0.006" size="0.005" rgba="1 0 0 1" type="sphere"/>
+        <!--<site name="target_touch_area_1" pos="0.02 0.03 0.006" size="0.005" rgba="1 0 0 1" type="sphere"/>
         <site name="target_touch_area_2" pos="0.02 -0.03 0.006" size="0.005" rgba="0 1 0 1" type="sphere"/>
-        <site name="target_touch_area_3" pos="-0.02 0 0.006" size="0.005" rgba="0 0 1 1" type="sphere"/>
+        <site name="target_touch_area_3" pos="-0.02 0 0.006" size="0.005" rgba="0 0 1 1" type="sphere"/> -->
 
 
         <!--<body name="handy" pos="0.2 0 0.9">
@@ -52,15 +54,15 @@
             <!-- in myohand_body.xml, IFtip defined as index finger tip
             here tendon links the taget_touch_area_1 and the IFtio together-->
             <site site="IFtip"/>
-            <site site="target_touch_area_1"/>
+            <site site="touch_area_1"/>
         </spatial>
                 <spatial name="IFtip_err_2" rgba="0 0.8 0 0.1">
             <site site="IFtip"/>
-            <site site="target_touch_area_2"/>
+            <site site="touch_area_2"/>
         </spatial>
         <spatial name="IFtip_err_3" rgba="0 0 0.8 0.1">
             <site site="MFtip"/>
-            <site site="target_touch_area_3"/>
+            <site site="touch_area_3"/>
         </spatial>
     </tendon>
 </mujoco>
