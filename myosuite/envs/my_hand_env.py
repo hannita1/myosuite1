@@ -77,7 +77,8 @@ class MyHandEnv(BaseV0):
         dist_IF_to_touch_1 = np.linalg.norm(obs_dict['IFtip_pos'] - target_positions[0])
         dist_IF_to_touch_2 = np.linalg.norm(obs_dict['IFtip_pos'] - target_positions[1])
         dist_IF_to_touch_3 = np.linalg.norm(obs_dict['IFtip_pos'] - target_positions[2])
-        min_dist_to_touch = min(dist_IF_to_touch_1, dist_IF_to_touch_2, dist_IF_to_touch_3)
+        #min_dist_to_touch = min(dist_IF_to_touch_1, dist_IF_to_touch_2, dist_IF_to_touch_3)
+        min_dist_to_touch = dist_IF_to_touch_1
 
         # Ensure pose_err is an array
         obs_dict['pose_err'] = np.array([min_dist_to_touch])
@@ -102,7 +103,7 @@ class MyHandEnv(BaseV0):
             ('distance_to_touch_areas', -1.0 * pose_dist),
             # reward if the finger is within a certain distance to the target,
             ('bonus', 1.0 if pose_dist < tap_threshold else 0.0),
-            # if the distance between the finger and the target is too big -> penalty
+            # if the distance between the finger and the target is too big -> penalty (0 or 1)
             ('penalty', -1.0 * (pose_dist > far_th)),
             # penalty for too much activity of the joints -> should prevent too much unnecessary movement
             # negative value of the norm of the joint activity,
@@ -121,16 +122,16 @@ class MyHandEnv(BaseV0):
 
 
 
-
-    def reset(self):
-        self.sim.reset()
-        qpos = self.init_qpos.copy()
-        qvel = self.init_qvel.copy()
-        self.sim.data.qpos[:] = qpos
-        self.sim.data.qvel[:] = qvel
-        self.sim.forward()
-        return self.get_obs()
-
+    """"
+        def reset(self):
+            self.sim.reset()
+            qpos = self.init_qpos.copy()
+            qvel = self.init_qvel.copy()
+            self.sim.data.qpos[:] = qpos
+            self.sim.data.qvel[:] = qvel
+            self.sim.forward()
+            return self.get_obs()
+    """
 
     """
     def reset(self, seed=None, options=None):
