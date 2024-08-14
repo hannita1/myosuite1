@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import myosuite
 from myosuite.utils import gym
 from myosuite.utils import gym; register=gym.register
+import myosuite.envs
 
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
@@ -19,19 +20,17 @@ from stable_baselines3.common.evaluation import evaluate_policy
 #my_hand_env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../myosuite/envs'))
 #sys.path.append(my_hand_env_path)
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+
 if project_root not in sys.path:
     sys.path.append(project_root)
-from myosuite.envs.my_hand_env import MyHandEnv
+
 
 #model_path = os.path.join(project_root, 'myosuite/envs/myo/assets/hand/myohand_tabletop_phone.xml')
 
 def train_and_evaluate():
-    #models_dir = "models/PPO/ObjHoldFixed"
-    #logs_dir = "logs/ObjHoldFixed"
-    #results_file = "training_results_ObjHoldFixed.csv"
-    models_dir = "models/PPO/MyHandEnv"
+    models_dir = "models/PPO/MyHandEnv32"
     logs_dir = "logs/MyHandEnv"
-    results_file = "training_results_MyHandEnv.csv"
+    results_file = "mean_reward_tables/training_results_MyHandEnv32.csv"
 
     if not os.path.exists(models_dir):
         os.makedirs(models_dir)
@@ -50,13 +49,15 @@ def train_and_evaluate():
 
     # Initialize the PPO model
     model = PPO('MlpPolicy', train_env, verbose=1, tensorboard_log=logs_dir)
+    # oder load model
+    #model = PPO.load("models/PPO/MyHandEnv30/90000000.zip",  train_env, verbose=1, tensorboard_log=logs_dir)
     # MlpPolicy = multi Layer Perception Policy = a neural network
     # parallel environments train_env
 
-    TIMESTEPS = 100
+    TIMESTEPS = 10000000
     # more timesteps -> more time to train per iteration, model has more time to learn before saving
     # -> more opportunities to learn from experience to improve the policy
-    n_iterations = 10
+    n_iterations = 30
 
     # List to store mean rewards
     mean_rewards = []
@@ -68,7 +69,7 @@ def train_and_evaluate():
 
     for i in range(1, n_iterations):
         # more episode -> more models are saved, more models to evaluate
-        model.learn(total_timesteps=TIMESTEPS)
+        model.learn(total_timesteps=TIMESTEPS) #verbose parameter setzen
         # Save model every 10000 steps
         model.save(f"{models_dir}/{TIMESTEPS * i}")
 
@@ -192,7 +193,7 @@ if __name__ == "__main__":
 
 
     ## Test trained policy
-    models_dir = "models/PPO/MyHandEnv"
+    models_dir = "models/PPO/MyHandEnv32"
     env_id = 'MyHandEnv-v0'
 
     #models_dir = "models/PPO/HandPoseFixed"
@@ -202,9 +203,9 @@ if __name__ == "__main__":
     #env_id = 'myoHandObjHoldFixed-v0'
 
     ## load policy and render
-    model_path = f"{models_dir}/900"
-    render_and_evaluate(model_path, env_id)
+    #model_path = f"{models_dir}/80000000"
+    #render_and_evaluate(model_path, env_id)
 
 
-    #plot_mean_rewards_from_csv("training_results.csv")
+    #plot_mean_rewards_from_csv("training_results_MyHandEnv30.csv")
 
