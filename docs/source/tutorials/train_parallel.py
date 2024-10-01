@@ -11,10 +11,9 @@ from myosuite.utils import gym
 from myosuite.utils import gym; register=gym.register
 import myosuite.envs
 
-from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines3.common.utils import set_random_seed
-from stable_baselines3 import PPO, A2C
+from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
 
 #my_hand_env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../myosuite/envs'))
@@ -156,8 +155,12 @@ def render_and_evaluate(model_path, env_id):
             obs = render_env.get_obs()
             #action = render_env.action_space.sample()
             action, _ = pi.predict(obs)
-
+            print(f"Action {action}: truncated: {_}")
             next_state, reward, done,*_, info = render_env.step(action)
+            #print(f"reward: {reward}")
+            #print(f"done: {done}")
+            #print(f"Info: {info}")
+            #print(f" truncated: {_}")
             if done:
                 break
 
@@ -166,7 +169,7 @@ def render_and_evaluate(model_path, env_id):
 
     # Evaluate the trained model
     mean_reward, std_reward = evaluate_policy(pi, render_env, n_eval_episodes=10)
-    print(f"Mean reward: {mean_reward} +/- {std_reward:.2f}")
+    #print(f"Mean reward: {mean_reward} +/- {std_reward:.2f}")
 
 if __name__ == "__main__":
     register(
@@ -185,7 +188,7 @@ if __name__ == "__main__":
 
 
     ## train model
-    model, models_dir, TIMESTEPS, n_iterations, env_id, mean_rewards, std_rewards = train_and_evaluate()
+    #model, models_dir, TIMESTEPS, n_iterations, env_id, mean_rewards, std_rewards = train_and_evaluate()
     #print(f"mean reward: {mean_rewards} ")
     #plot_mean_rewards(mean_rewards, std_rewards)
     #model_path = f"{models_dir}/{TIMESTEPS * n_iterations}"
@@ -193,7 +196,7 @@ if __name__ == "__main__":
 
 
     ## Test trained policy
-    models_dir = "models/PPO/MyHandEnv32"
+    models_dir = "models/PPO/MyHandEnv29"
     env_id = 'MyHandEnv-v0'
 
     #models_dir = "models/PPO/HandPoseFixed"
@@ -203,8 +206,8 @@ if __name__ == "__main__":
     #env_id = 'myoHandObjHoldFixed-v0'
 
     ## load policy and render
-    #model_path = f"{models_dir}/80000000"
-    #render_and_evaluate(model_path, env_id)
+    model_path = f"{models_dir}/80000000"
+    render_and_evaluate(model_path, env_id)
 
 
     #plot_mean_rewards_from_csv("training_results_MyHandEnv30.csv")

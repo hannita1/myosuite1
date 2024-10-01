@@ -474,7 +474,7 @@ class MujocoEnv(gym.Env, gym.utils.EzPickle, ObsVecDict):
         env_info = {
             'time': self.obs_dict['time'][()],          # MDP(t)
             'rwd_dense': self.rwd_dict['dense'][()],    # MDP(t)
-            'rwd_sparse': self.rwd_dict['sparse'][()],  # MDP(t)
+            #'rwd_sparse': self.rwd_dict['sparse'][()],  # MDP(t)
             'solved': self.rwd_dict['solved'][()],      # MDP(t)
             'done': self.rwd_dict['done'][()],          # MDP(t)
             'obs_dict': self.obs_dict,                  # MDP(t)

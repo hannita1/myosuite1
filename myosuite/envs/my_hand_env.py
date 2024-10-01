@@ -107,6 +107,7 @@ class MyHandEnv(BaseV0):
             ('penalty', -1.0 * (pose_dist > far_th)),
             # penalty for too much activity of the joints -> should prevent too much unnecessary movement
             # negative value of the norm of the joint activity,
+            ('sparse', -1.0 * pose_dist),
             # the norm of the act vector is the sum of the activity of the joints
             ('act_reg', -1.0 * act_mag),
             # true if task is solved -> the distance is lower than the threshold
